@@ -1,93 +1,108 @@
 # Azure-DVWA.ELK
 Instructions on downloading ELK on a container through Ansible, managing 3 VM's logs
+## Automated ELK Stack Deployment
 
-Automated ELK Stack Deployment
 The files in this repository were used to configure the network depicted below.
 
-https://app.diagrams.net/#G1l4RC6gqUeIu49AQDU68Sn6d9pu556dVX
+![alt text](https://github.com/jennytu99/Azure-DVWA.ELK/blob/main/Diagrams/ELK-DVWA-Diagram.jpg "Diagram")
 
 These files have been tested and used to generate a live ELK deployment on Azure. They can be used to either recreate the entire deployment pictured above. Alternatively, select portions of the playbook file may be used to install only certain pieces of it, such as Filebeat.
 
--Install-Elk.yml -Install-Filebeat.yml -Install-Metricbeat.yml
+  -Install-Elk.yml
+  -Install-Filebeat.yml
+  -Install-Metricbeat.yml
 
 This document contains the following details:
+- Description of the Topology
+- Access Policies
+- ELK Configuration
+  - Beats in Use
+  - Machines Being Monitored
+- How to Use the Ansible Build
 
-Description of the Topology
-Access Policies
-ELK Configuration
-Beats in Use
-Machines Being Monitored
-How to Use the Ansible Build
-Description of the Topology
+
+### Description of the Topology
+
 The main purpose of this network is to expose a load-balanced and monitored instance of DVWA, the D*mn Vulnerable Web Application.
 
 Load balancing ensures that the application will be highly available, in addition to restricting buffer overflow to the network.
+- Load balancers can protect against DOS attacks. An advantage of the jump box is that when there is an update, we can update using one system instead of spending time doing it on multiple systems. 
 
-Load balancers can protect against DOS attacks. An advantage of the jump box is that when there is an update, we can update using one system instead of spending time doing it on multiple systems.
 Integrating an ELK server allows users to easily monitor the vulnerable VMs for changes to the system and system logs.
 
-‘Filebeat monitors the log files or locations that you specify, collects log events, and forwards them either to Elasticsearch or Logstash for indexing.’
+- ‘Filebeat monitors the log files or locations that you specify, collects log events, and forwards them either to Elasticsearch or Logstash for indexing.’ 
 
-‘Metricbeat takes the metrics and statistics that it collects and ships them to the output that you specify, such as Elasticsearch or Logstash. Metricbeat helps you monitor your servers by collecting metrics from the system and services running on the server, such as: Apache.’
+- ‘Metricbeat takes the metrics and statistics that it collects and ships them to the output that you specify, such as Elasticsearch or Logstash. Metricbeat helps you monitor your servers by collecting metrics from the system and services running on the server, such as: Apache.’ 
+
 
 The configuration details of each machine may be found below.
 
-Name	Function	IP Address	Operating System
-Jump Box	Gateway	10.0.0.4	Ubuntu
-DVWA	Webserver	10.0.0.5	Ubuntu
-DVWA	Webserver	10.0.0.6	Ubuntu
-DVWA	Webserver	10.0.0.7	Ubuntu
-ELK	Elkserver	10.1.0.4	Ubuntu
-Access Policies
-The machines on the internal network are not exposed to the public Internet.
+| Name     | Function | IP Address  | Operating System |
+|----------|----------|-------------|------------------|
+| Jump Box | Gateway   | 10.0.0.4   | Ubuntu           |
+| DVWA     | Webserver | 10.0.0.5   | Ubuntu           |
+| DVWA     | Webserver | 10.0.0.6   | Ubuntu           |
+| DVWA     | Webserver | 10.0.0.7   | Ubuntu           |
+| ELK      | Elkserver | 10.1.0.4   | Ubuntu           |
+
+### Access Policies
+
+The machines on the internal network are not exposed to the public Internet. 
 
 Only the Jumpbox machine can accept connections from the Internet. Access to this machine is only allowed from the following IP addresses:
+- Your own ISP Ip address; In this case, 104.33.82.15
 
-Your own ISP Ip address; In this case, 104.33.82.15
 Machines within the network can only be accessed by the Jumpbox.
+- Jumpbox's public IP: 52.229.52.189
 
-Jumpbox's public IP: 52.229.52.189
 A summary of the access policies in place can be found in the table below. Note that it is only publicly accessibly due to the allowed access IP address.
 
-Name	Publicly Accessible	Allowed IP Addresses
-Jump Box	Yes	104.33.82.15
-ELK	Yes	104.33.82.15
-DVWA	No	10.0.0.4
-Elk Configuration
+| Name     | Publicly Accessible | Allowed IP Addresses |
+|----------|---------------------|----------------------|
+| Jump Box | Yes                 | 104.33.82.15         |
+| ELK      | Yes                 | 104.33.82.15         |
+| DVWA     | No                  | 10.0.0.4             |
+
+### Elk Configuration
+
 Ansible was used to automate configuration of the ELK machine. No configuration was performed manually, which is advantageous because there is no hassle of patching or making changes to 1 machine at a time, we can configure it in ansible and automate it with one machine
 
 The playbook implements the following tasks:
+- Install Docker 
+- Download docker ELK container
+- Configure the container to start w/ specific port mappings
+- Start the container
 
-Install Docker
-Download docker ELK container
-Configure the container to start w/ specific port mappings
-Start the container
-The following screenshot displays the result of running docker ps after successfully configuring the ELK instance. Please view in the Image folder.
+The following screenshot displays the result of running `docker ps` after successfully configuring the ELK instance. Please view in the Image folder.
 
-Elkdocker.jpg
-Target Machines & Beats
+    Elkdocker.jpg
+
+### Target Machines & Beats
 This ELK server is configured to monitor the following machines:
+- The DVWA webservers: 10.0.0.5, 10.0.0.6, 10.0.0.7
 
-The DVWA webservers: 10.0.0.5, 10.0.0.6, 10.0.0.7
 We have installed the following Beats on these machines:
+- Filebeats, Metricbeats
 
-Filebeats, Metricbeats
 These Beats allow us to collect the following information from each machine:
+- `Filebeat` is used to collect log files generated by Apache, Microsoft Azure tools, Ngninx web servers or MySQL databases. It then organizes those log files and sends it to Elasticserver.
+- `Metricbeat` is used to collect metrics and statistics, then sends it to Elasticsearch. It monitors servers and services running on the server.  
 
-Filebeat is used to collect log files generated by Apache, Microsoft Azure tools, Ngninx web servers or MySQL databases. It then organizes those log files and sends it to Elasticserver.
-Metricbeat is used to collect metrics and statistics, then sends it to Elasticsearch. It monitors servers and services running on the server.
-Using the Playbook
-In order to use the playbook, you will need to have an Ansible control node already configured. Assuming you have such a control node provisioned:
+### Using the Playbook
+In order to use the playbook, you will need to have an Ansible control node already configured. Assuming you have such a control node provisioned: 
 
 SSH into the control node and follow the steps below:
+- Copy the yaml file to /etc/ansible/roles
+- Update the ansible.cfg file to include the admin name to be used and enable remote user
+- Run the playbook, and navigate to the VM to check that the installation worked as expected.
 
-Copy the yaml file to /etc/ansible/roles
-Update the ansible.cfg file to include the admin name to be used and enable remote user
-Run the playbook, and navigate to the VM to check that the installation worked as expected.
+
 Playbook files end in .yml; You can copy it into any directories, but for organizational reasons, /etc/nameofsys
 
-Edit the Host file for updates to specific containers through Ansible.
+Edit the Host file for updates to specific containers through Ansible. 
 
-To specify which machine to install the ELK server versus which ito install Filbeat edit the nameofapp-config file and update the IP to specify the servers.
+To specify which machine to install the ELK server versus which ito install Filbeat edit the nameofapp-config file and update the `IP` to specify the servers.
 
-Visit http://[your.VM.IP]:5601/app/kibana to check if the ELK server is running.
+Visit http://[your.VM.IP]:5601/app/kibana to check if the ELK server is running. 
+
+## To Download files 
