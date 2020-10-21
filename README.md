@@ -104,5 +104,3 @@ Edit the Host file for updates to specific containers through Ansible.
 To specify which machine to install the ELK server versus which ito install Filbeat edit the nameofapp-config file and update the `IP` to specify the servers.
 
 Visit http://[your.VM.IP]:5601/app/kibana to check if the ELK server is running. 
-
-## To Download files 
