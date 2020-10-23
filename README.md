@@ -4,7 +4,7 @@ Instructions on downloading ELK on a container through Ansible, managing 3 VM's 
 
 The files in this repository were used to configure the network depicted below.
 
-![alt text](https://github.com/jennytu99/Azure-DVWA.ELK/blob/main/Diagrams/ELK-DVWA-Diagram "Diagram")
+![alt text](https://github.com/jennytu99/Azure-DVWA.ELK/blob/main/Diagrams/ELK-DVWA-Diagram1.jpg "Diagram")
 
 These files have been tested and used to generate a live ELK deployment on Azure. They can be used to either recreate the entire deployment pictured above. Alternatively, select portions of the playbook file may be used to install only certain pieces of it, such as Filebeat.
 
